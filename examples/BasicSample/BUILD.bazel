@@ -1,4 +1,8 @@
-load("@rules_experimental_android//:defs.bzl", "composer_instrumentation_test")
+load(
+    "@rules_experimental_android//:defs.bzl",
+    "composer_instrumentation_test",
+    "marathon_android_test",
+)
 
 licenses(["notice"])  # Apache 2.0
 
@@ -55,6 +59,11 @@ android_binary(
 
 composer_instrumentation_test(
     name = "BasicSampleComposerTest",
+    test_app = ":BasicSampleTest",
+)
+
+marathon_android_test(
+    name = "BasicSampleMarathonTest",
     test_app = ":BasicSampleTest",
 )
 
