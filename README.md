@@ -1,7 +1,7 @@
 # Experimental Bazel Android
 
-This repository contains experimental rules and tools for build Android projects
-with Bazel.
+This repository contains experimental rules and tools for building and testing
+Android projects with Bazel.
 
 Please do not depend on these for production usage.
 
