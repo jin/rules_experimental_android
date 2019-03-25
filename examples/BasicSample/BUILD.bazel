@@ -33,11 +33,13 @@ android_library(
     custom_package = "com.example.android.testing.espresso.BasicSample.test",
     deps = [
         ":BasicSampleLib",
-        "@maven//:androidx_test_espresso_espresso_core",
         "@maven//:androidx_annotation_annotation",
-        "@maven//:junit_junit",
-        "@maven//:androidx_test_runner",
+        "@maven//:androidx_test_core",
+        "@maven//:androidx_test_espresso_espresso_core",
         "@maven//:androidx_test_ext_junit",
+        "@maven//:androidx_test_runner",
+        "@maven//:junit_junit",
+        "@maven//:org_hamcrest_java_hamcrest",
     ],
 )
 
@@ -53,20 +55,18 @@ android_binary(
     deps = [":BasicSampleTestLib"],
 )
 
-composer_instrumentation_test(
-    name = "BasicSampleComposerTest",
-    test_app = ":BasicSampleTest",
-)
+DEVICE_TYPES = ["pixel", "pixel_c", "nexus_4", "nexus_10"]
+API_LEVELS = [25, 26, 28]
 
-API_LEVELS = [
-    "19_x86",
-    "21_x86",
-    "22_x86",
-    "23_x86",
+[
+    [
+        composer_instrumentation_test(
+            name = "BasicSampleComposerTest_%s_%s" % (DEVICE_TYPE, API_LEVEL),
+            test_apk = ":BasicSampleTest",
+            api_level = API_LEVEL,
+            device_type = DEVICE_TYPE,
+            google_apis = True,
+        ) for DEVICE_TYPE in DEVICE_TYPES
+    ]
+    for API_LEVEL in API_LEVELS
 ]
-
-[android_instrumentation_test(
-    name = "BasicSampleInstrumentationTest_%s" % API_LEVEL,
-    target_device = "@android_test_support//tools/android/emulated_devices/generic_phone:android_%s_qemu2" % API_LEVEL,
-    test_app = ":BasicSampleTest",
-) for API_LEVEL in API_LEVELS]
