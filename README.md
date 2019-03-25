@@ -123,7 +123,7 @@ Tips:
 * Show errors from test failures: `--test_output=errors`
 * Disable sandboxing: `--spawn_strategy=local`
   
-### Running with a locally connected device.
+### Running with a locally connected device
 
 You can also run the tests on a separately launched emulator or an USB connected
 device via USB by specifying `device_type = "local"`. Note that Bazel does not
