@@ -18,12 +18,16 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
-        "com.google.guava:guava:27.1-android",
-        "androidx.test.espresso:espresso-core:3.1.1",
         "androidx.annotation:annotation:1.0.2",
-        "androidx.test:runner:1.1.1",
+        "androidx.test.espresso:espresso-core:3.1.1",
+        "androidx.test.espresso:espresso-intents:3.1.1",
         "androidx.test.ext:junit:1.1.1-alpha02",
+        "androidx.test:core:1.1.0",
+        "androidx.test:runner:1.1.1",
+        "androidx.test:monitor:1.1.1",
+        "com.google.guava:guava:27.1-android",
         "junit:junit:4.12",
+        "org.hamcrest:java-hamcrest:2.0.0.0",
     ],
     repositories = [
         "https://maven.google.com",
