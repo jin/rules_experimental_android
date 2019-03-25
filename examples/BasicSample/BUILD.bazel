@@ -55,34 +55,18 @@ android_binary(
     deps = [":BasicSampleTestLib"],
 )
 
-composer_instrumentation_test(
-    name = "BasicSampleComposerTest",
-    test_apk = ":BasicSampleTest",
-    api_level = 26,
-    device = "pixel",
-    google_apis = True,
-)
+DEVICE_TYPES = ["pixel", "pixel_c", "nexus_4", "nexus_10"]
+API_LEVELS = [25, 26, 28]
 
-composer_instrumentation_test(
-    name = "BasicSampleComposerTest2",
-    test_apk = ":BasicSampleTest",
-    api_level = 26,
-    device = "pixel",
-    google_apis = True,
-)
-
-composer_instrumentation_test(
-    name = "BasicSampleComposerTest3",
-    test_apk = ":BasicSampleTest",
-    api_level = 26,
-    device = "pixel",
-    google_apis = True,
-)
-
-composer_instrumentation_test(
-    name = "BasicSampleComposerTest4",
-    test_apk = ":BasicSampleTest",
-    api_level = 26,
-    device = "pixel",
-    google_apis = True,
-)
+[
+    [
+        composer_instrumentation_test(
+            name = "BasicSampleComposerTest_%s_%s" % (DEVICE_TYPE, API_LEVEL),
+            test_apk = ":BasicSampleTest",
+            api_level = API_LEVEL,
+            device_type = DEVICE_TYPE,
+            google_apis = True,
+        ) for DEVICE_TYPE in DEVICE_TYPES
+    ]
+    for API_LEVEL in API_LEVELS
+]

@@ -63,6 +63,6 @@ composer_instrumentation_test(
     name = "CustomMatcherComposerTest",
     test_apk = ":CustomMatcherSampleTest",
     api_level = 26,
-    device = "pixel",
+    device_type = "pixel",
     google_apis = True,
 )
