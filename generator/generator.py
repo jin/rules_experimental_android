@@ -146,17 +146,18 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 RULES_JVM_EXTERNAL_TAG = "1.2"
 RULES_JVM_EXTERNAL_SHA = "e5c68b87f750309a79f59c2b69ead5c3221ffa54ff9496306937bfa1c9c8c86b"
 
-local_repository(
-    name = "rules_jvm_external",
-    path = "/Users/jin/code/rules_jvm_external",
+git_repository(
+    name = "rules_experimental_android",
+    remote = "https://github.com/jin/rules_experimental_android.git",
+    tag = "master",
 )
 
-# http_archive(
-#     name = "rules_jvm_external",
-#     strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
-#     sha256 = RULES_JVM_EXTERNAL_SHA,
-#     url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
-# )
+http_archive(
+    name = "rules_jvm_external",
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 maven_install(
