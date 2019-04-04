@@ -166,3 +166,29 @@ sequentially on the shared device.
 - [ ] Android Test Orchestrator support
 - [ ] Extra APKs support
 - [ ] Support testing with multiple locally connected devices
+
+## Gradle to Bazel project generator
+
+There is an experimental Gradle-to-Bazel project generator. In your Gradle projectwith a `gradlew` at the project root, create a `WORKSPACE` file with:
+
+```python
+RULES_EXPERIMENTAL_ANDROID_TAG = "..."
+http_archive(
+    name = "rules_experimental_android",
+    url = "https://github.com/jin/rules_experimental_android/archive/%s.zip" % RULES_EXPERIMENTAL_ANDROID_TAG,
+    strip_prefix = "rules_experimental_android-" + RULES_EXPERIMENTAL_ANDROID_TAG,
+)
+```
+
+Then, run this to generate `WORKSPACE`, `BUILD.bazel`, and `.bazelrc` file:
+
+```
+$ bazel run @rules_experimental_android//generator -- \
+  gradle \
+  --module app \
+  --configuration api \
+  --configuration implementation \
+  --configuration annotationProcessor \
+  --directory `pwd` \
+  --write_to_project_directory
+```
