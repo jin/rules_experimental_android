@@ -1,0 +1,18 @@
+build --experimental_strict_action_env
+
+build --experimental_generate_json_trace_profile
+build --profile profile.json.gz
+build --experimental_json_trace_compression
+
+build --spawn_strategy=standalone # disable sandboxing
+build --genrule_strategy=standalone # disable sandboxing for genrules
+build --strategy=DexBuilder=worker # enable persistent workers for dexing
+build --worker_max_instances=DexBuilder=2 # limit 2 workers for dexing to exploit dexbuilder's cache locality
+build --strategy=Javac=worker # enable persistent workers for java compilation
+build --strategy=Desugar=worker # enable persistent workers for desugaring
+build --persistent_android_resource_processor # enable persistent workers for android resource processing
+build --android_aapt=aapt2
+build --experimental_multi_threaded_digest # great for SSDs
+build --nojava_header_compilation # this will definitely affect incremental build performance, this is here only for a proof of concept. Ideally we can turn the Java header compiler into a persistent worker for lower execution cost.
+
+test --test_strategy=exclusive

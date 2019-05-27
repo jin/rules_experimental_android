@@ -5,6 +5,10 @@ with Bazel.
 
 Please do not depend on these for production usage.
 
+These rules depend on the latest version of Bazel. The version is managed
+using `.bazelversion` through
+[bazelisk](https://github.com/bazelbuild/bazelisk).
+
 ## Usage
 
 ```python
