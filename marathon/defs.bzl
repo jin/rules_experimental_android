@@ -33,8 +33,17 @@ def _marathon_android_test_impl(ctx):
         ctx.file._marathon.short_path, "--marathonfile", marathonfile.short_path,
     ]
 
+    chmod_app_cmd = [
+        "chmod", "+w", app.short_path, '\n'
+    ]
+    chmod_test_app_cmd = [
+        "chmod", "+w", test_app.short_path, '\n'
+    ]
+
+    script = " ".join(chmod_app_cmd) + " ".join(chmod_test_app_cmd) + " ".join(test_cmd)
+
     test_runner = ctx.actions.declare_file("test_runner.sh")
-    ctx.actions.write(test_runner, " ".join(test_cmd), True)
+    ctx.actions.write(test_runner, script, True)
 
     return [
         DefaultInfo(
