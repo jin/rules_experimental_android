@@ -42,7 +42,7 @@ mkdir -p $ANDROID_AVD_HOME
 
 export ANDROID_SDK_ROOT=$TEST_SRCDIR/{sdk_path}
 export ANDROID_HOME=$ANDROID_SDK_ROOT # required by Composer
-export DYLD_LIBRARY_PATH=$ANDROID_SDK_ROOT/tools/lib64:$ANDROID_SDK_ROOT/tools/lib64/qt/lib
+export DYLD_LIBRARY_PATH=$ANDROID_SDK_ROOT/emulator/lib64:$ANDROID_SDK_ROOT/emulator/lib64/qt/lib
 
 $ANDROID_SDK_ROOT/tools/bin/avdmanager \
     create avd  \
@@ -72,7 +72,8 @@ then
     NO_WINDOW="-no-window"
 fi
 
-nohup $ANDROID_SDK_ROOT/tools/emulator \
+# https://stackoverflow.com/a/43093003/981937
+nohup $ANDROID_SDK_ROOT/emulator/emulator \
     @{test_target_label} \
     -wipe-data \
     -no-audio \
@@ -148,9 +149,8 @@ def _composer_instrumentation_test_impl(ctx):
     if ctx.attr.device_type == "local" and ctx.attr.api_level != -1:
         fail("ERROR: If you're using testing with a local device, please do not set the api_level or google_apis attributes.")
 
-    instr_info = ctx.attr.test_apk[AndroidInstrumentationInfo]
-    apk = instr_info.target_apk
-    test_apk = instr_info.instrumentation_apk
+    apk = ctx.attr.test_apk[AndroidInstrumentationInfo].target.signed_apk
+    test_apk = ctx.attr.test_apk[ApkInfo].signed_apk
 
     runfiles = ctx.runfiles(
         files = [
@@ -206,7 +206,7 @@ composer_instrumentation_test = rule(
         "api_level": attr.int(default = -1),
         "device_type": attr.string(values = AVDMANAGER_DEVICE_TYPE_ID_MAP.keys(), default = "generic_4_7"),
         "google_apis": attr.bool(default = False),
-        "test_apk": attr.label(providers = [AndroidInstrumentationInfo]),
+        "test_apk": attr.label(providers = [AndroidInstrumentationInfo, ApkInfo]),
         "_adb": attr.label(default = "@androidsdk//:adb", allow_single_file = True),
         "_androidsdk_files": attr.label(default = "@androidsdk//:files", allow_files = True),
         "_avdmanager": attr.label(default = "@androidsdk//:tools/bin/avdmanager", allow_single_file = True),
