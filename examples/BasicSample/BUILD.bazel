@@ -1,4 +1,8 @@
-load("@rules_experimental_android//:defs.bzl", "composer_instrumentation_test")
+load(
+    "@rules_experimental_android//:defs.bzl",
+    "composer_instrumentation_test",
+    "marathon_android_test",
+)
 
 licenses(["notice"])  # Apache 2.0
 
@@ -57,6 +61,11 @@ android_binary(
 
 DEVICE_TYPES = ["pixel", "pixel_c", "nexus_4", "nexus_10"]
 API_LEVELS = [25, 26, 28]
+
+marathon_android_test(
+    name = "BasicSampleMarathonTest",
+    test_app = ":BasicSampleTest",
+)
 
 [
     [
